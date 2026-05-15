@@ -4,6 +4,7 @@ struct CommunityDetailView: View {
     @EnvironmentObject private var communityViewModel: CommunityViewModel
     @State private var selectedTab: FeedTab = .announcements
     @State private var showingCreateAnnouncementSheet = false
+    @State private var showingCreateConcernSheet = false
 
     let communityID: Community.ID
 
@@ -54,7 +55,10 @@ struct CommunityDetailView: View {
         .task {
             if let community {
                 await communityViewModel.loadAnnouncements(by: community.id)
-                communityViewModel.observeAnnouncements(by: community.id)
+                await communityViewModel.loadConcerns(by: community.id)
+                
+                communityViewModel.observeListeners(by: community.id)
+                
             }
         }
         .navigationTitle("")
@@ -66,10 +70,14 @@ struct CommunityDetailView: View {
             }
         }
         .onDisappear {
-            communityViewModel.stopObservingAnnouncements()
+            communityViewModel.stopObservingListeners()
         }
         .sheet(isPresented: $showingCreateAnnouncementSheet) {
             CreateAnnouncementView(communityID: communityID)
+                .environmentObject(communityViewModel)
+        }
+        .sheet(isPresented: $showingCreateConcernSheet) {
+            CreateConcernView(communityID: communityID)
                 .environmentObject(communityViewModel)
         }
         .ignoresSafeArea()
@@ -95,7 +103,9 @@ struct CommunityDetailView: View {
             switch selectedTab {
             case .announcements:
                 showingCreateAnnouncementSheet = true
-            case .concerns, .marketplace:
+            case .concerns:
+                showingCreateConcernSheet = true
+            case .marketplace:
                 break
             }
         } label: {
@@ -106,8 +116,8 @@ struct CommunityDetailView: View {
                 .background(Color.blue)
                 .clipShape(Circle())
         }
-        .disabled(selectedTab != .announcements)
-        .opacity(selectedTab == .announcements ? 1 : 0.45)
+        .disabled(selectedTab == .marketplace)
+        .opacity(selectedTab == .marketplace ? 0.45 : 1)
     }
 
     @ViewBuilder
@@ -131,7 +141,9 @@ struct CommunityDetailView: View {
                 }
             }
         case .concerns:
-            if community.concerns.isEmpty {
+            let concerns = communityViewModel.concerns.filter { $0.communityId == community.id.uuidString }
+          
+            if concerns.isEmpty {
                 EmptyStateView(
                     title: "No concerns reported",
                     message: "Residents can submit issues like lighting, flooding, and safety concerns here.",
@@ -139,7 +151,7 @@ struct CommunityDetailView: View {
                 )
             } else {
                 LazyVStack(spacing: 14) {
-                    ForEach(community.concerns) { concern in
+                    ForEach(concerns) { concern in
                         ConcernCard(concern: concern)
                     }
                 }
@@ -230,6 +242,73 @@ private struct CreateAnnouncementView: View {
                         communityViewModel.addAnnouncement(
                             title: title.trimmingCharacters(in: .whitespacesAndNewlines),
                             description: description.trimmingCharacters(in: .whitespacesAndNewlines)
+                        )
+                        dismiss()
+                    }
+                    .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+    }
+}
+
+private struct CreateConcernView: View {
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var communityViewModel: CommunityViewModel
+
+    @State private var title = ""
+    @State private var description = ""
+    @State private var selectedSymbol = "photo"
+
+    let communityID: Community.ID
+
+    private let concernSymbols = ["photo", "lightbulb.max.fill", "drop.fill", "car.fill", "trash.fill", "exclamationmark.triangle.fill"]
+
+    private var communityName: String {
+        communityViewModel.communities.first(where: { $0.id == communityID })?.name ?? "Community"
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Concern") {
+                    TextField("Title", text: $title)
+
+                    TextField("Description", text: $description, axis: .vertical)
+                        .lineLimit(6, reservesSpace: true)
+
+                    Picker("Optional image", selection: $selectedSymbol) {
+                        ForEach(concernSymbols, id: \.self) { symbol in
+                            Label(symbol.replacingOccurrences(of: ".", with: " "), systemImage: symbol)
+                                .tag(symbol)
+                        }
+                    }
+                }
+
+                Section {
+                    Text("This will be reported to \(communityName).")
+                        .font(.footnote)
+                        .foregroundStyle(AppTheme.textSecondary)
+                }
+            }
+            .navigationTitle("Report Concern")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Submit") {
+                        communityViewModel.selectCommunityIfNeeded(communityID)
+                        communityViewModel.addConcern(
+                            title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+                            description: description.trimmingCharacters(in: .whitespacesAndNewlines),
+                            imageName: selectedSymbol == "photo" ? nil : selectedSymbol
                         )
                         dismiss()
                     }

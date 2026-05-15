@@ -46,40 +46,10 @@
             filePath = "CommUnity/ViewModels/CommunityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "loadCommunities()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "EA9E02E2-8D8C-41C0-8736-7093372988EE - c89ef81aae5b2123"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for CommUnity.CommunityViewModel.loadCommunities() async -&gt; ()"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "101"
-                  endingLineNumber = "101">
-               </Location>
-               <Location
-                  uuid = "EA9E02E2-8D8C-41C0-8736-7093372988EE - 635747c350fa4f26"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for CommUnity.CommunityViewModel.loadCommunities() async -&gt; ()"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "101"
-                  endingLineNumber = "101">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -92,40 +62,10 @@
             filePath = "CommUnity/ViewModels/CommunityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "selectCommunityIfNeeded(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "935118D9-1404-4D5A-BEA8-6D18C2B44F6B - 8e230759e3e952fb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CommUnity.CommunityViewModel.joinCommunity(code: Swift.String) -&gt; ()"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "131"
-                  endingLineNumber = "131">
-               </Location>
-               <Location
-                  uuid = "935118D9-1404-4D5A-BEA8-6D18C2B44F6B - c9c7f514d8b8078b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CommUnity.CommunityViewModel.selectCommunityIfNeeded(Foundation.UUID) -&gt; ()"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "131"
-                  endingLineNumber = "131">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,40 +78,10 @@
             filePath = "CommUnity/ViewModels/CommunityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "deinit"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "EC07BA7F-418C-4374-87DC-47435D268B01 - a19f85653192ecaa"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "$defer() -&gt; ()"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92">
-               </Location>
-               <Location
-                  uuid = "EC07BA7F-418C-4374-87DC-47435D268B01 - bac62c860cff07ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "CommUnity.CommunityViewModel.deinit"
-                  moduleName = "CommUnity.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/christienjakepacia/Desktop/Dev%20projects/CommUnity/CommUnity/ViewModels/CommunityViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "92"
-                  endingLineNumber = "92">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -184,9 +94,9 @@
             filePath = "CommUnity/ViewModels/CommunityViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "observeAnnouncements(by:)"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "observeListeners(by:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

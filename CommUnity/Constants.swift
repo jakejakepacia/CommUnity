@@ -24,6 +24,7 @@ struct K {
         static let communityCollectionName = "communities"
         static let announcementsCollectionName = "announcements"
         static let concernCollectionName = "concerns"
+        static let communityIdField = "communityId"
         static let idField = "id"
         static let firstNameField = "firstName"
         static let lastNameField = "lastName"

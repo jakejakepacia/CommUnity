@@ -7,6 +7,7 @@ final class CommunityViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var communities: [Community] = []
     @Published var announcements: [Announcement] = []
+    @Published var concerns: [Concern] = []
     @Published var selectedCommunityID: Community.ID?
     @Published var communityMessage: String?
 
@@ -23,6 +24,7 @@ final class CommunityViewModel: ObservableObject {
     private let communityService: CommunityServicing
     private let previewMode: Bool
     private var announcementsListener: ListenerRegistration?
+    private var concernsListener: ListenerRegistration?
 
     init(
         communityService: CommunityServicing = FirebaseCommunityService(),
@@ -71,22 +73,34 @@ final class CommunityViewModel: ObservableObject {
         await loadCommunities()
     }
     
-    func observeAnnouncements(by communityID: UUID) {
+    func observeListeners(by communityID: UUID) {
 
-        announcementsListener?.remove()
-
+        stopObservingListeners()
+        
         announcementsListener = communityService.listenToAnnouncements(
             communityId: communityID
         ) { [weak self] announcements in
 
             self?.announcements = announcements
         }
+        
+        concernsListener = communityService.listenToConcerns(
+            communityId: communityID
+        ) { [weak self] concerns in
+
+            self?.concerns = concerns
+        }
     }
     
-    func stopObservingAnnouncements() {
+    func stopObservingListeners() {
         announcementsListener?.remove()
         announcementsListener = nil
+        
+        concernsListener?.remove()
+        concernsListener = nil
     }
+    
+    
 
     deinit {
         announcementsListener?.remove()
@@ -121,6 +135,18 @@ final class CommunityViewModel: ObservableObject {
             print("Error loading announcements")
         }
       
+    }
+    
+    func loadConcerns(by communityID: UUID) async{
+        do{
+            let fetched = try await communityService.fetchConcerns(communityId: communityID)
+            concerns = fetched.sorted {
+                $0.date > $1.date
+            }
+        } catch {
+            concerns = []
+            print("Error loading concerns")
+        }
     }
     
     func selectCommunity(_ community: Community) {
@@ -251,20 +277,23 @@ final class CommunityViewModel: ObservableObject {
         guard let communityIndex = selectedCommunityIndex,
               let currentUser else { return }
 
-        communities[communityIndex].concerns.insert(
-            Concern(
-                id: UUID(),
-                communityId: communities[communityIndex].id.uuidString,
-                title: title,
-                description: description,
-                imageName: imageName,
-                status: .pending,
-                reporter: currentUser.firstName,
-                reporterUserId: currentUser.id,
-                date: .now
-            ),
-            at: 0
+        let concern =  Concern(
+            id: UUID(),
+            communityId: communities[communityIndex].id.uuidString,
+            title: title,
+            description: description,
+            imageName: imageName,
+            status: .pending,
+            reporter: currentUser.firstName,
+            reporterUserId: currentUser.id,
+            date: .now
         )
+        
+        concerns.append(concern)
+        
+        Task{
+            try? await self.communityService.addConcern(concern: concern)
+        }
     }
 
     func addMarketplaceItem(title: String, priceText: String, description: String, imageName: String) {

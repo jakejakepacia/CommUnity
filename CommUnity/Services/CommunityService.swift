@@ -13,6 +13,10 @@ protocol CommunityServicing {
         communityId: UUID,
         completion: @escaping ([Announcement]) -> Void
     ) -> ListenerRegistration
+    func listenToConcerns(
+        communityId: UUID,
+        completion: @escaping ([Concern]) -> Void
+    ) -> ListenerRegistration
 }
 
 struct FirebaseCommunityService: CommunityServicing {
@@ -41,6 +45,23 @@ struct FirebaseCommunityService: CommunityServicing {
                     completion(announcements)
                 }
         }
+    
+    func listenToConcerns(communityId: UUID, completion: @escaping ([Concern]) -> Void) -> any ListenerRegistration {
+        return db.collection(K.FStore.concernCollectionName)
+            .whereField(K.FStore.communityIdField, isEqualTo: communityId.uuidString)
+            .addSnapshotListener { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    completion([])
+                    return
+                }
+                
+                let concerns = documents.compactMap {
+                    try? $0.data(as: Concern.self)
+                }.sorted { $0.date > $1.date}
+                
+                completion(concerns)
+            }
+    }
     
     func fetchCommunities() async throws -> [Community] {
         try await db.collection(K.FStore.communityCollectionName)
@@ -93,7 +114,7 @@ struct FirebaseCommunityService: CommunityServicing {
     
     func fetchConcerns(communityId: UUID) async throws -> [Concern] {
         let snapshot = try await db.collection(K.FStore.concernCollectionName)
-            .whereField("communityId", isEqualTo: communityId)
+            .whereField("communityId", isEqualTo: communityId.uuidString)
             .getDocuments()
         
         return snapshot.documents.compactMap { document in
