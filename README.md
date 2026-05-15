@@ -17,7 +17,7 @@ Users can create and manage their own communities such as:
 - Friend groups
 
 ### 📢 Announcements
-Community admins and members can post important announcements to quickly inform everyone about:
+Community admins can post important announcements to quickly inform everyone about:
 - Meetings
 - Events
 - Emergencies
