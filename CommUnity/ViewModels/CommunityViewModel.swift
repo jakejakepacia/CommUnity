@@ -254,11 +254,13 @@ final class CommunityViewModel: ObservableObject {
         communities[communityIndex].concerns.insert(
             Concern(
                 id: UUID(),
+                communityId: communities[communityIndex].id.uuidString,
                 title: title,
                 description: description,
                 imageName: imageName,
                 status: .pending,
                 reporter: currentUser.firstName,
+                reporterUserId: currentUser.id,
                 date: .now
             ),
             at: 0

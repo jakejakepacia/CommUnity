@@ -4,9 +4,11 @@ import Foundation
 protocol CommunityServicing {
     func fetchCommunities() async throws -> [Community]
     func fetchAnnouncements(communityId: UUID) async throws -> [Announcement]
+    func fetchConcerns(communityId: UUID) async throws -> [Concern]
     func createCommunity(_ community: Community) async throws
     func joinPublicCommnuty(communityId: UUID, _ user: User) async throws
     func postAnnouncement(announcement: Announcement) async throws
+    func addConcern(concern: Concern) async throws
     func listenToAnnouncements(
         communityId: UUID,
         completion: @escaping ([Announcement]) -> Void
@@ -83,6 +85,22 @@ struct FirebaseCommunityService: CommunityServicing {
         }
     }
     
+    func addConcern(concern: Concern) async throws {
+        try db.collection(K.FStore.concernCollectionName)
+            .document(concern.id.uuidString)
+            .setData(from: concern)
+    }
+    
+    func fetchConcerns(communityId: UUID) async throws -> [Concern] {
+        let snapshot = try await db.collection(K.FStore.concernCollectionName)
+            .whereField("communityId", isEqualTo: communityId)
+            .getDocuments()
+        
+        return snapshot.documents.compactMap { document in
+            try? document.data(as: Concern.self)
+        }
+        
+    }
     
 }
 

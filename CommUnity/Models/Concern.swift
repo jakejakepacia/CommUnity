@@ -10,10 +10,12 @@ enum ConcernStatus: String, CaseIterable, Identifiable, Codable {
 
 struct Concern: Identifiable, Equatable, Codable {
     let id: UUID
+    var communityId: String
     var title: String
     var description: String
     var imageName: String?
     var status: ConcernStatus
     var reporter: String
+    var reporterUserId: String
     var date: Date
 }
